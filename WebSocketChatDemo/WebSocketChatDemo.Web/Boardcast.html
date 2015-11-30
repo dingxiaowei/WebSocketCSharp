@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>BoardCast</title>
+    <script type="text/javascript">
+        var url = "ws://localhost:2013";
+        var ws = null;
+        function onLoaded() {
+
+            if ("WebSocket" in window) {
+                ws = new WebSocket(url);
+            }
+            else if ("MozWebSocket" in window) {
+                ws = new MozWebSocket(url);
+            } else {
+                document.getElementById("message_output").innerHTML = "浏览器不支持WebSocket";
+            }
+
+            ws.onopen = function () {
+                document.getElementById("message_output").innerHTML = "连接服务器成功" + "<br/>";
+            }
+            ws.onclose = function () {
+                document.getElementById("message_output").innerHTML = "与服务器断开连接" + "<br/>";
+            }
+
+            ws.onerror = function () {
+                document.getElementById("message_output").innerHTML = "通信发生错误" + "<br/>";
+            }
+            ws.onmessage = function (msg) {
+                document.getElementById("message_output").innerHTML = msg.data;
+            }
+
+        }
+    </script>
+</head>
+<body onload="onLoaded()">
+    <div id="message_output"></div>
+</body>
+</html>
